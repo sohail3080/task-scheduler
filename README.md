@@ -1,206 +1,168 @@
-🛠️ Production-Grade Task Orchestration & Job Scheduling System
-📌 Overview
+# Production-Grade Task Orchestration & Job Scheduling System
 
-This project is a backend-focused task orchestration and job scheduling system.
+## Overview
 
-The goal is to build a reliable background task execution engine that can:
+This project is a **backend-focused task orchestration and job scheduling system**.
 
-accept tasks from clients or other services
+The goal is to build a **reliable background task execution engine** that can:
+- accept tasks from clients or other services
+- schedule tasks to run immediately or in the future
+- execute tasks safely using workers
+- retry tasks intelligently on failure
+- track task state throughout its lifecycle
 
-schedule them to run immediately or in the future
+This system is intentionally designed to focus on **real-world backend problems**, not simple CRUD operations.
 
-execute them safely using workers
+---
 
-retry tasks intelligently on failure
+## Motivation
 
-track task state throughout its lifecycle
+Modern backend systems rely heavily on **background jobs**, such as:
+- sending emails
+- processing payments
+- calling webhooks
+- generating reports
+- running delayed or scheduled tasks
 
-This system is not a toy scheduler.
-It focuses on real-world backend concerns such as failure handling, retries, idempotency, and scalability.
+These operations should **not block user requests** and must be executed **reliably**, even when failures occur.
 
-🎯 Motivation
+This project exists to deeply understand:
+- how background job systems work internally
+- how tasks are scheduled and executed
+- how failures and retries are handled
+- how backend systems scale safely
 
-Modern backend systems rely heavily on background jobs:
+---
 
-sending emails
+## Core Idea
 
-processing payments
+The system separates **task orchestration** from **task logic**.
 
-calling webhooks
+- The system does **not** decide what to do.
+- It only manages **when** and **how** tasks are executed.
+- The actual task behavior is implemented through **task handlers**.
 
-generating reports
+Each task is treated as:
 
-running delayed or scheduled work
+> **Instructions + data + execution time**
 
-These tasks should not block user requests and must be executed reliably, even when failures happen.
+---
 
-This project is built to deeply understand:
+## High-Level Architecture
 
-how real background job systems work
+The system is composed of the following parts:
 
-how tasks are scheduled and executed
+- **API Layer**
+  - Accepts task creation requests
+  - Validates and persists task instructions
 
-how failures are handled in production systems
+- **Scheduler**
+  - Periodically checks for tasks ready to run
+  - Moves tasks into an executable state
 
-how backend systems scale safely
+- **Workers**
+  - Fetch ready tasks
+  - Execute the appropriate task handler
+  - Update task state based on execution result
 
-🧠 Core Idea
+- **Persistent Storage**
+  - Stores task state
+  - Tracks retries and errors
+  - Enables recovery after crashes
 
-The system separates task orchestration from task logic.
+---
 
-The system itself does not decide what to do.
-
-It only manages when and how tasks are executed.
-
-The actual task behavior is implemented through task handlers.
-
-Each task is simply:
-
-Instructions + data + execution time
-
-🏗️ High-Level Architecture
-
-API Layer
-
-Accepts tasks from clients or services
-
-Validates and stores task instructions
-
-Scheduler
-
-Periodically checks for tasks that are ready to run
-
-Moves tasks to an executable state
-
-Workers
-
-Fetch ready tasks
-
-Execute task handlers
-
-Update task state based on result
-
-Storage
-
-Persistent task state
-
-Retry counts
-
-Error tracking
-
-🔄 Task Lifecycle
+## Task Lifecycle
 
 Each task moves through a defined lifecycle:
 
 PENDING → READY → RUNNING → SUCCESS
-                    ↘ FAILED → RETRY → DEAD
+↘ FAILED → RETRY → DEAD
 
 
-PENDING: Task is stored but not ready to run
+- **PENDING**: Task is stored but not ready to run
+- **READY**: Task is eligible for execution
+- **RUNNING**: Task is currently being processed
+- **SUCCESS**: Task completed successfully
+- **FAILED**: Task execution failed
+- **RETRY**: Task will be retried after a delay
+- **DEAD**: Task exceeded max retries and will not be retried again
 
-READY: Task is eligible for execution
+Task state is persisted to ensure reliability and recoverability.
 
-RUNNING: Task is currently being processed by a worker
+---
 
-SUCCESS: Task completed successfully
+## Initial Scope
 
-FAILED: Task execution failed
+The initial scope of this project is **deliberately minimal**, focusing on correctness and system design rather than feature breadth.
 
-RETRY: Task will be retried after a delay
+### Supported Task Types
 
-DEAD: Task exceeded max retries and is stopped
+#### 1. SEND_EMAIL
+- Simulates sending an email
+- Used to demonstrate asynchronous task execution
+- Email delivery is mocked or logged (no real email provider)
 
-This lifecycle is explicitly tracked and persisted.
+#### 2. DELAYED_MESSAGE
+- Logs a message after a specified delay
+- Used to validate scheduling and timing logic
 
-📦 Initial Scope (Deliberately Minimal)
+#### 3. FAIL_SOMETIMES
+- Randomly fails based on a configured probability
+- Used to test retry logic and backoff strategies
 
-The initial version of the system focuses on correctness and reliability, not feature bloat.
+#### 4. WEBHOOK_CALL
+- Sends an HTTP POST request to an external endpoint
+- Retries on non-success responses or network failures
 
-Supported Task Types
+These task types are examples and not limitations.  
+New task types can be added without modifying the core system.
 
-The system initially supports the following task types:
+---
 
-1. SEND_EMAIL
+## What This Project Is Not
 
-Simulates sending an email
+- Not a frontend application
+- Not a cron replacement
+- Not a business-logic decision engine
+- Not a framework-specific demo
 
-Used to demonstrate asynchronous execution
+This project focuses purely on **backend system design and reliability**.
 
-Email delivery is mocked/logged (no real provider)
+---
 
-2. DELAYED_MESSAGE
+## Engineering Concepts Explored
 
-Logs a message after a scheduled delay
+- Background task execution
+- Job scheduling and delayed tasks
+- Task state machines
+- Retry strategies and exponential backoff
+- Idempotency and duplicate execution safety
+- Worker isolation and scalability
+- Failure handling and recovery
+- Observability through logging and metrics
 
-Used to verify scheduling correctness
+---
 
-3. FAIL_SOMETIMES
+## Documentation Approach
 
-Randomly fails based on probability
+Every major design decision is documented, including:
+- database schema design
+- scheduling strategy
+- worker coordination
+- retry and failure handling
+- trade-offs and alternatives considered
 
-Used to test retry logic and backoff strategies
+The goal is not just to build the system, but to **understand and explain it clearly**.
 
-4. WEBHOOK_CALL
+---
 
-Sends an HTTP POST request to an external endpoint
+## Current Status
 
-Retries on failure or non-200 responses
+🚧 **Project initialization and system design**
 
-These task types are examples, not limitations.
-New task types can be added without changing the core system.
-
-🧩 What This Project Is NOT
-
-❌ A frontend application
-
-❌ A cron replacement
-
-❌ A business-logic decision engine
-
-❌ A framework-specific demo
-
-This project is focused purely on backend system design.
-
-🧪 Key Engineering Concepts Explored
-
-Background task execution
-
-Scheduling and delayed jobs
-
-Task state machines
-
-Retry strategies and exponential backoff
-
-Idempotency and duplicate execution safety
-
-Worker isolation and scalability
-
-Failure recovery and observability
-
-📚 Documentation & Learning Approach
-
-Every major design decision in this project is documented, including:
-
-database schema choices
-
-scheduling strategy
-
-worker coordination
-
-failure scenarios and recovery behavior
-
-trade-offs and alternative approaches
-
-The goal is not just to build the system, but to understand and explain it clearly.
-
-🚧 Current Status
-
-🚀 Initial system design and scope definition
-
-Next steps include:
-
-designing the task database schema
-
-defining API contracts
-
-implementing scheduler and worker loops
+Upcoming steps:
+- database schema design
+- API contract definition
+- scheduler implementation
+- worker execution logic
