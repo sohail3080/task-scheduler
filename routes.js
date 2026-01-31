@@ -1,4 +1,5 @@
 import express from 'express'
+import { createTask } from './controllers/taskController.js'
 
 const router = express.Router()
 
@@ -8,13 +9,6 @@ router.get('/', (req, res) => {
 })
 
 //Create a new Task -> POST /api/v1/tasks
-router.post('/tasks', (req, res) => {
-    console.log(req.body)
-    res.status(201).json({
-        success: true,
-        message: 'Task created successfully',
-        data: req.body
-    })
-})
+router.post('/tasks', createTask)
 
 export default router

@@ -122,79 +122,17 @@ New task types can be added without modifying the core system.
 
 ```json
 {
-  "meta": {
-    "id": "email_8f92a",
-    "type": "PASSWORD_RESET",
-    "priority": "high",
-    "trigger": "user_action",
-    "locale": "en",
-    "environment": "production"
+  "type": "SEND_EMAIL",
+  "payload": {
+    "to": "user@example.com",
+    "subject": "Welcome to Our Platform!",
+    "content": "<h1>Hello John!</h1><p>Welcome to our platform. Please click the link below to activate your account:</p><a href='https://example.com/activate?token=abc123'>Activate Account</a>",
+    "from": "no-reply@example.com"
   },
-
-  "from": {
-    "name": "Acme App",
-    "email": "no-reply@acme.com"
-  },
-
-  "to": [
-    {
-      "email": "user@example.com",
-      "name": "John Doe"
-    }
-  ],
-
-  "cc": [],
-  "bcc": [],
-
-  "subject": "Reset your password",
-
-  "content": {
-    "format": "html",
-    "text": "You requested a password reset.",
-    "html": "<p>You requested a password reset.</p>"
-  },
-
-  "template": {
-    "name": "password-reset",
-    "version": "v2",
-    "engine": "handlebars"
-  },
-
-  "variables": {
-    "username": "John",
-    "resetLink": "https://app.com/reset?token=abc123",
-    "expiresInMinutes": 15
-  },
-
-  "attachments": [
-    {
-      "filename": "invoice.pdf",
-      "contentType": "application/pdf",
-      "url": "https://cdn.acme.com/invoices/inv_101.pdf"
-    }
-  ],
-
-  "tracking": {
-    "openTracking": true,
-    "clickTracking": true,
-    "tags": ["auth", "security"]
-  },
-
-  "schedule": {
-    "sendAt": null,
-    "timezone": "UTC"
-  },
-
-  "retry": {
-    "maxAttempts": 3,
-    "delaySeconds": 60
-  },
-
-  "debug": {
-    "log": true,
-    "storePayload": true
-  }
+  "runAt": "2026-02-01T10:00:00.000Z",
+  "availableAt": "2026-02-01T10:00:00.000Z"
 }
+
 ```
 ---
 
