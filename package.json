@@ -1,0 +1,28 @@
+{
+  "name": "proj1",
+  "version": "1.0.0",
+  "description": "This project is a **backend-focused task orchestration and job scheduling system**.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sohail3080/task-scheduler.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/sohail3080/task-scheduler/issues"
+  },
+  "homepage": "https://github.com/sohail3080/task-scheduler#readme",
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "mongoose": "^9.1.5",
+    "nodemon": "^3.1.11"
+  }
+}
