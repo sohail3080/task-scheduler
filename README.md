@@ -195,7 +195,7 @@ New task types can be added without modifying the core system.
     "storePayload": true
   }
 }
-
+```
 ---
 
 ## What This Project Is Not
