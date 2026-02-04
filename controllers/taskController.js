@@ -15,9 +15,17 @@ export const createTask = async (req, res) => {
 export const viewAllTasks = async (req, res) => {
     try {
         const taskCount = await tasksModel.countDocuments()
+        const pendingTaskCount = await tasksModel.countDocuments({ status: 'PENDING' })
+        const processingTaskCount = await tasksModel.countDocuments({ status: 'PROCESSING' })
+        const completedTaskCount = await tasksModel.countDocuments({ status: 'COMPLETED' })
+        const failedTaskCount = await tasksModel.countDocuments({ status: 'FAILED' })
         const tasks = await tasksModel.find()
         res.status(200).json({
-            taskCount: taskCount,
+            totalTaskCount: taskCount,
+            pendingTaskCount: pendingTaskCount,
+            processingTaskCount: processingTaskCount,
+            completedTaskCount: completedTaskCount,
+            failedTaskCount: failedTaskCount,
             tasks: tasks
         })
     } catch (error) {

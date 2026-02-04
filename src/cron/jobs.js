@@ -77,6 +77,11 @@ cron.schedule('*/15 * * * * *', async () => {
                         }
                     }
                 );
+                await failedLogModel.create({
+                    taskId: task._id,
+                    taskStatus: 'FAILED',
+                    errorMessage: err.message
+                });
                 continue;
             }
 

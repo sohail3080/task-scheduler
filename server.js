@@ -26,16 +26,42 @@ app.listen(port, () => {
 })
 
 
-//Next set of tasks:
-//=======================================================
-//Created the task,
-//Now we have to handle the task execution/schedule
-//We will check using cron-job, if the task is ready to be executed,
-//If the task is ready, we will execute it.
-//For now we are sending mail, we will just create an
-//entry in a table for the execution of the task, if correctly
-//executed, we will update the status and handle such.
-//If not executed, we willl have a log table, where we will
-//store the error and reason for the failure.
-//We will also have a retry mechanism, if the task fails,
-//We will retry the task after a certain time.
+// =======================================================
+// Milestone Completed: Basic Task Execution (Simulated)
+// =======================================================
+//
+// Implemented the foundational flow of the task orchestration system:
+//
+// - Task creation and persistence
+// - Cron-based scheduler to detect executable tasks
+// - Simulated task execution for SEND_EMAIL
+//   (email sending is mocked by storing execution data in a table)
+// - Task state transitions (PENDING → RUNNING → SUCCESS / RETRY / DEAD)
+// - Error logging for failed executions
+// - Retry mechanism with delayed re-attempts
+//
+// Email delivery is intentionally mocked to keep the focus on
+// scheduling, state management, and failure handling rather than
+// external integrations.
+//
+// This completes the initial, end-to-end execution pipeline.
+// =======================================================
+
+// =======================================================
+// Project Status
+// =======================================================
+//
+// The initial scope of this project is intentionally kept
+// small but substantial.
+//
+// The goal was to build and understand the core mechanics
+// of a background task scheduling and execution system,
+// not to fully replicate a production-ready job framework.
+//
+// At this stage, the foundational concepts have been
+// implemented and validated. Further expansion is
+// intentionally deferred, as the objective of this
+// project has been achieved.
+//
+// Development on this topic is concluded for now.
+// =======================================================
