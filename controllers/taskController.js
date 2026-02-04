@@ -10,3 +10,17 @@ export const createTask = async (req, res) => {
         res.status(500).json({ message: error.message })
     }
 }
+
+//View all tasks
+export const viewAllTasks = async (req, res) => {
+    try {
+        const taskCount = await tasksModel.countDocuments()
+        const tasks = await tasksModel.find()
+        res.status(200).json({
+            taskCount: taskCount,
+            tasks: tasks
+        })
+    } catch (error) {
+        res.status(500).json({ message: error.message })
+    }
+}

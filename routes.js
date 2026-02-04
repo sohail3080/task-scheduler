@@ -1,5 +1,5 @@
 import express from 'express'
-import { createTask } from './controllers/taskController.js'
+import { createTask, viewAllTasks } from './controllers/taskController.js'
 
 const router = express.Router()
 
@@ -11,4 +11,6 @@ router.get('/', (req, res) => {
 //Create a new Task -> POST /api/v1/tasks
 router.post('/tasks', createTask)
 
+//View all tasks -> GET /api/v1/tasks
+router.get('/tasks', viewAllTasks)
 export default router
